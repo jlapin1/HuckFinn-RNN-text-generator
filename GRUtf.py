@@ -30,19 +30,6 @@ class RNN():
         self.os = output_size
         self.bptt_trunc = bptt_trunc
         
-#        self.E = tf.Variable(tf.random_uniform((self.es, self.vs), -self.es**-0.5, self.es**-0.5))
-#        self.Uz = tf.Variable(tf.random.uniform((self.hd, self.es), -self.es**-0.5, self.es**-0.5))
-#        self.Wz = tf.Variable(tf.random.uniform((self.hd, self.hd), -self.hd**-0.5, self.hd**-0.5))
-#        self.bz = tf.Variable(tf.zeros((self.hd, 1), dtype=tf.float32))
-#        self.Ur = tf.Variable(tf.random.uniform((self.hd, self.es), -self.es**-0.5, self.es**-0.5))
-#        self.Wr = tf.Variable(tf.random.uniform((self.hd, self.hd), -self.hd**-0.5, self.hd**-0.5))
-#        self.br = tf.Variable(tf.zeros((self.hd, 1), dtype=tf.float32))
-#        self.Uh = tf.Variable(tf.random.uniform((self.hd, self.es), -self.es**-0.5, self.es**-0.5))
-#        self.Wh = tf.Variable(tf.random.uniform((self.hd, self.hd), -self.hd**-0.5, self.hd**-0.5))
-#        self.bh = tf.Variable(tf.zeros((self.hd, 1), dtype=tf.float32))
-#        self.V = tf.Variable(tf.random.uniform((self.os, self.hd), -self.hd**-0.5, self.hd**-0.5))
-#        self.c = tf.Variable(tf.zeros((self.os, 1), dtype=tf.float32))
-        
         E = np.random.uniform( -self.vs**-0.5, self.vs**-0.5, (self.es, self.vs))
         Uz = np.random.uniform(-self.es**-0.5, self.es**-0.5, (self.hd, self.es))
         Ur = np.random.uniform(-self.es**-0.5, self.es**-0.5, (self.hd, self.es))
@@ -205,34 +192,10 @@ inps = np.array(inps);targs = np.array(targs)
 # End setting up training ...#
 ##############################
 model = RNN(vocab_size, es, hd, vocab_size)
-#with tf.GradientTape() as t:
-#    loss = model.calctotloss(inps[:50], targs[:50])
-#mg = t.gradient(loss, model.var)
-#import sys;sys.exit()
-##loss = rnn.calctotloss(inps[0], targs[0])
-
 epochs = 10
 batch_size = 100
 alpha = 0.01
 
 batches = inps.shape[0] // 100 + 1
-
-#for l in range(epochs):
-#    globe = [tf.Variable(tf.zeros_like(m)) for m in model.var]
-#    loss_tot = 0
-#    for m in range(batches):
-#        first = m*batch_size
-#        last = (m+1)*batch_size if m<batches-1 else inps.shape[0]
-#        with tf.GradientTape() as t:
-#            loss = model.calctotloss(inps[first:last], targs[first:last])
-#        grads = t.gradient(loss, model.var)
-#        for n,o in enumerate(grads):
-#            globe[n].assign_add(o)
-#        loss_tot += loss/len(inps[0])
-#        sys.stdout.write("\rBatch %d/%d "%(m+1, batches))
-#    for m,n in enumerate(globe):
-#        model.var[m].assign_sub(alpha*(n/batches))
-#    
-#    print("Epoch: %d; Loss: %f"%(l, loss_tot/batches))
 
 adam(model, inps, targs, epochs, batch_size, lam=0)
