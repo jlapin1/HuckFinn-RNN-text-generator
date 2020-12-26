@@ -201,5 +201,5 @@ batch_size = 64
 alpha = 0.01
 
 batches = inps.shape[0] // 100 + 1
-model.loadweights()
+#model.loadweights()
 #adam(model, inps, targs, epochs, batch_size, lam=0)
